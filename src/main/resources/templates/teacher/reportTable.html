@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- <div class="form-container" style="margin:40px 40px 40px 50px;">  
+ -->    
+    <section class="book_section layout_padding">
+        <div class="container-fluid"> 
+            <div class="greetings" style="margin:20px ;">
+            </div>  
+          <div class="container">
+            <div class="row" >
+            
+                <table class="table">
+                    <thead>
+                      <tr>
+    
+            <th scope="col">Course</th>
+            <th scope="col">Year</th>
+            <th scope="col">Semester</th>
+
+            <th scope="col">Subject</th>
+            <th scope="col">Student</th>
+
+            <th scope="col">Attendance %</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="report : ${attendanceReport}">
+<!--             <td th:text="${report.id}" name="course" ></td>
+ -->
+           <td th:text="${report.course.course_name}" name="course" ></td>
+            <td th:text="${report.year.year}" name="year"></td>
+            <td th:text="${report.sem.sem}" name="sem"></td>
+            <td th:text="${report.subject.sub_name}" name="subject"></td>
+           
+
+            <td th:text="${report.student.full_name}"></td>
+             <td th:text="${#numbers.formatDecimal(report.attendancePercentage, 1, 2)} + '%'"></td>
+         </tr>
+        <tr th:if="${#lists.isEmpty(attendanceReport)}">
+            <td >No attendance data available</td>
+        </tr>
+    </tbody>
+</table></div>
+
+
+</html>

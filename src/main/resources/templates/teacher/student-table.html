@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+  <div class="row" style="margin:40px 150px;">
+     <!--<form id="saveAttendance" th:action="@{/teacher/saveAttendance}" action="#"
+     method="post" th:object="${attendance}"> -->
+     
+ <!-- 
+     <p>Course ID: <span th:text="${course.course_id}"></span></p>
+<p>Year ID: <span th:text="${year.year_id}"></span></p>
+<p>Semester ID: <span th:text="${sem.sem_id}"></span></p>
+<p>Subject ID: <span th:text="${subject.sub_id}"></span></p>
+ -->
+          <div class="row">     
+            <div class="col-md-4">
+              <div class="form_container">
+                 <label>Course:</label><input type="text" class="form-control me-2"   id="course" name="course"  placeholder="course" >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form_container">
+               <label>Year:</label><input type="text"  class="form-control me-2"   id="year" name="year" placeholder="year">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form_container">
+                <label>Sem:</label><input type="text" class="form-control me-2"  id="sem"  name="sem" placeholder="sem">
+
+              </div>
+            </div>
+            <div class="col-md-4">
+              <la class="form_container">
+               <label> Subject:</label><input type="text" class="form-control me-2"  id="subject" name="subject" placeholder="subject">
+
+               </div> 
+               <div class="col-md-4">
+                <div class="form_container">
+                 <label> Date:</label>
+               <input type="date" class="form-control me-2" id="datepicker" name="date">
+              </div></div>
+             <!--  <div class="col-md-4">
+                <div class="form_container">
+                 
+              <td colspan="1">
+                <select id="status" name="status" class="form-control">
+                  <option value="Select">Select</option>
+                  <option value="Absent">Absent</option>
+                  <option value="Present" >Present</option>
+             
+                  </select></td></div></div>
+             --></div>  
+
+
+         </div> 
+         <table class="table"><!-- </table> style="display: none;"-->
+ 
+         <thead>
+               <tr>
+
+
+                 
+                 <th scope="col">Student ID</th>
+
+                 <th scope="col">Status</th>
+                 
+
+               </tr>
+             </thead>
+
+             <td>
+              
+<!--                 <tr th:each="i : ${#numbers.sequence(0, size -1)}">
+ -->
+                    <!-- Display rows up to maxRows -->
+             <!--      <td><input type="text" id="enrollment_id" th:name="enrollment_id" th:value="${enrollment.id}"></td>
+                  <td><input type="text" th:name="student" th:value="${enrollment.student.full_name}">
+                  </td>
+              -->    
+                  <tr th:each="attendance :${attendance}">
+                     <td th:text="${attendance.id}"   name="id" id="id" >
+                    </td>
+                   <td th:text="${attendance.student_id}"  name="student_id" id="student_id"></td>
+                   <td th:text="${attendance.status}"  name="status" id="status"></td>
+
+                  </tr>      <!--  <td>             <input type="text" th:name="|enrollments[${stat.index}].student.full_name|" th:value="${enrollment.student.full_name}"/>
+   
+   <span th:text="${enrollment.student.full_name}"></span></td>
+ -->
+<!--  <option th:each="course : ${courses}" th:value="${course.course_id}" th:text="${course.course_name}" th:selected="${course.course_id == course_id}"></option>
+ -->
+<!-- 
+ <tr><td>
+  <input type="text" name="student" class="form-control" id="student" placeholder="Enter student student_name" />
+</td>
+
+                      <td colspan="1">
+                      <select id="status" name="status" class="form-control">
+                       <option value="Select">Select</option>
+
+                        <option value="ABSENT" >ABSENT</option>
+                        <option value="PRESENT" >PRESENT</option>
+
+                      <!--   <option value="Select">Select</option>
+                        <option value="Absent">Absent</option>SSSSSSSSSS
+                        <option value="Present" >Present</option>
+                    --><!-- 
+                        </select></td>
+              
+            </tr> -->
+ -->
+                
+                    
+
+               </tbody>
+         </table>
+         </div></div>
+          <div class="row">    
+            <div class="form_container" style="margin:30px 650px;">
+              <div class="btn_box" >
+               <button type="submit" class="save-btn" id="submitButton"> 
+               </button>
+              </div>
+            </div>
+         </div>
+     </form>
+    </div>
+     
+ </div>
+
+ <script>
+          $(document).ready(function () {
+
+  $('#submitButton').click(function() {
+                // Get the form data
+                var formData = $('#saveAttendance').serialize(); // Serialize form data
+
+                // Make an AJAX request
+                $.ajax({
+                   // url: '/teacher/saveAttendance',  // Your Spring Controller URL
+                    type: 'POST',
+                    data: formData,  // Send serialized data
+                    success: function(response) {
+                        // Handle success
+                        $('#responseMessage').html('<div class="alert alert-success">Attendance saved successfully!</div>');
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error
+                        $('#responseMessage').html('<div class="alert alert-danger">Error occurred while saving attendance.</div>');
+                    }
+                });
+            });});
+ </script>
+ </html>

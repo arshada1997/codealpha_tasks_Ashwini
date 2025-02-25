@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="~{/fragments/head::head}">
+        </head>
+      <body class="sub_page">
+      
+        <div class="hero_area">
+           <div class="bg-box">
+            <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+          </div>
+          <header th:replace="~{/fragments/header::header}"></header>
+        </div>
+          <section class="book_section layout_padding">
+            <div class="container">
+               <div class="heading_container">
+                 <h4>
+                   Update
+                 </h4>
+               </div>
+               <div class="row">
+                 <div class="col-md-6">
+                   <div class="form_container">
+                     <p th:text="${error}" th:if="${error ne null}"  class="alert alert-danger" ></p>
+                     <form action="#"
+                     th:action="@{'/viewTeacher/{id}/updateTeacher' (id=${teacher.id})}"
+                     th:object="${teacher}"
+                     method="post">
+                 
+                     <input type="hidden" id="id" name="id" th:field="*{id}"/>
+<!--                      <input id="title" th:field="*{title}" name="title" type="text" class="form-control" placeholder="title" />
+ -->                   
+                       <div>
+                         <input type="text" id="full_name" th:field="*{full_name}" name="full_name"   class="form-control" placeholder="Full Name" />
+                       </div>
+                       <div>
+                         <input id="email" name="email" th:field="*{email}" type="email" class="form-control" placeholder="Enter Email" />
+         <!--                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="error"  class="alert alert-danger" role="alert">Email Error</p>
+          -->              </div>
+                       <div>
+                         <input type="text" id="mobile_no" name="mobile_no" th:field="*{mobile_no}"  class="form-control" placeholder="Enter MobileNo" />
+                       </div>
+                       <div>
+                         <input type="text" id="address" name="address" th:field="*{address}"  class="form-control" placeholder="Enter Address" />
+                       </div>
+                       <div>
+                        <input type="LocalDate" id="date_of_birth" name="date_of_birth"  th:field="*{date_of_birth}" class="form-control" placeholder="Enter date_of_birth" />
+                      </div>
+<!-- 
+                       <div>
+                        <input type="text" id="course" name="course"  th:text="${id.course.course_name}" class="form-control" placeholder="Enter Course" />
+                      </div>
+ -->        <!--               th:field="*{middlename}"
+         -->           <div>
+        <label for="course">Courses:</label>
+        <select multiple th:field="*{course}" id="course">
+            <option th:each="course : ${course}" 
+                    th:value="${course.id}" 
+                    th:text="${course.courseName}" 
+                    th:selected="${teacher.course.contains(course)}"></option>
+        </select>
+    </div>
+                     
+                      <div>
+                        <input type="text" id="year" name="year"   th:value="${year_name}" class="form-control" placeholder="Enter Year" />
+        <!--                 <p th:if="${#fields.hasErrors('birthofDate')}" th:errors="*{birthofDate}" th:errorclass="error"  class="alert alert-danger" role="alert">birthofDate Error</p>
+         -->
+                      </div>
+                      <div>
+                        <input type="text" id="sem" name="sem"   th:text="${sem_name}" class="form-control" placeholder="Enter Semester" />
+                      </div>
+                      <div>
+                        <input type="text" id="subject" name="subject"   th:text="${sub_name}" class="form-control" placeholder="Enter Subject" />
+                      </div>
+                    
+          <button type="submit"  class="btn btn-primary">
+            Update post
+          </button>
+         
+        
+        </form>
+
+
+</div>
+</div>
+</div>
+</section>
+</body></html>            
+         

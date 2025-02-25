@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="~{/fragments/head::head}">
+                  </head>
+      <body class="sub_page">
+      
+        <div class="hero_area">
+           <div class="bg-box">
+            <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+          </div>
+          <header th:replace="~{/fragments/header::header}"></header>
+        </div>
+      
+     <!-- Alt+Shift+A <div style="width:100%;height: 400px;">
+        <center style="margin:40px 30px;">
+            <h1>Attendance Management System</h1>
+        </center>   
+       </div>  
+       
+      --> 
+    <section class="book_section layout_padding">
+      <div class="container-fluid"> 
+          <div class="greetings" style="margin:20px ;">
+          <center><h1>Student Details</h1></center>
+          </div>  
+          <center>
+        <div class="container">
+          <div class="row" >
+            <form th:action="@{/admin/viewStudent}">
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Address</th>
+                 
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="student :${students}">
+                  <td th:text="${student.student_id}"  name="student_id" id="student_id"></td>
+                  <td th:text="${student.full_name}"  name="full_name" id="full_name"></td>
+                  <td th:text="${student.email}"  name="email" id="email"></td>
+                  <td th:text="${student.gender}"  name="gender" id="gender"></td>
+                  <td th:text="${student.address}"  name="address" id="address"></td>
+               <!--    <td>
+                    <div class="btn-box">
+                    <a th:href="@{/admin/updateEnrollment/{id}(id=${enrollment.id})}"> 
+                        <button type="submit" class="btn btn-primary btn-lg btn-danger">Update</a></div>
+                   </td>    
+                -->  <!--  <td><a th:href="@{/admin/{id}+'/deleteEnrollment'}" class="btn btn-primary btn-lg btn-primary" role="button" aria-pressed="true">Delete</a>
+                   </td>    
+                  --> </td>
+
+
+
+                 </tr></tbody>
+              </table></div>
+        </div></center>
+      </div>  </form>
+     </section>
+    <!--  <div style="margin: 130px 0px 10px;">
+      <footer th:replace="~{/fragments/footer::footer}">
+       </footer>
+      </div>
+    -->
+  </body>
+  </html>

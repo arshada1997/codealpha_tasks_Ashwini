@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{/fragments/head::head}">
+<!--     <script src="/js/courseHandler.js"></script>
+ -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+  </head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img th:src="@{/resources/static/images/hero1-bg.jpg}" alt="">
+    </div>
+    <header th:replace="~{/fragments/header::header}"></header>
+  </div>
+
+  <!-- about section -->
+   <center>
+  <section class="book_section layout_padding">
+   <div class="container">
+      <div class="heading_container">
+        <h4>
+          Student Enrollment 
+        </h4>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <p th:text="${error}" th:if="${error ne null}"  class="alert alert-danger" ></p>
+
+            <form action="#"
+             th:action="@{/admin/saveEnrollment}" th:object="${enrollment}" method="post">
+             <!--  th:object="${account}"
+             method="post">
+              --> 
+                <select id="student" class="form-control me-2" name="student_id"> 
+                <option value="">Select Student</option>
+                <option th:each="student : ${students}" th:value="${student.student_id}" th:text="${student.full_name}"  th:selected="${student.student_id == student_id}"></option>
+               </select>
+              <div id="EnrollDate">
+                <input type="LocalDate" id="enrollment_date" name="enrollment_date"   class="form-control" placeholder="Enter Enrollment_Date" />
+              </div>
+             
+    <div>
+        <select id="course" class="form-control me-2" name="course"> 
+        <option value="">Select Course</option>
+        <option th:each="course : ${courses}" th:value="${course.course_id}" th:text="${course.course_name}"  th:selected="${course.course_id == course_id}"></option>
+       </select>
+        <select id="year" class="form-control me-2" name="year">
+            <option value="">Select Year</option>
+        </select>
+        
+            <select id="sem" class="form-control me-2" name="semesters">
+                <option value="">Select Semester</option>
+            </select>
+<!--             <input type="subject" name="subject" id="subject" class="form-control me-2">
+ -->            <select id="subject" class="form-control me-2" name="subject">
+                <option value="">Select Subject</option>
+            </select>
+            </div>
+              <div class="btn_box">
+                <button type="submit" class="btn  btn-secondary btn-lg btn-danger"> 
+                  Save
+                </button>
+            
+              </form>
+        </div>
+    </div></div></div>
+  </section></center>
+  <script>
+  $(document).ready(function () {
+  
+    $(document).ready(function () {
+      $('#course').change(function () {
+          var course_id = $(this).val();
+          if (course_id) {
+              console.log(course_id); // Check if this is being set properly
+
+              $.get('/admin/course/' + course_id + '/details', function (data) {
+                  $('#year').html('<option value="">--Select--</option>');
+                  $('#sem').html('<option value="">--Select--</option>');
+                  $('#subject').html('<option value="">--Select--</option>');
+
+                  $.each(data.years, function (index, year) {
+                      var selected = (year.year_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#year').append('<option value="' + year.year_id + '">' + year.year + '</option>');
+                  });
+
+                  $.each(data.semesters, function (index, sem) {
+                      var selected = (sem.sem_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#sem').append('<option value="' + sem.sem_id + '">' + sem.sem+ '</option>');
+                  });
+
+                  $.each(data.subjects, function (index, subject) {
+                      var selected = (subject.sub_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#subject').append('<option value="' + subject.sub_id + '">' + subject.sub_name + '</option>');
+                  });
+
+                  $('#year, #sem, #subject').prop('disabled', false);
+              });
+          }
+      });
+
+        // When a dropdown value changes, update the hidden fields
+  $('#course, #year, #sem, #subject').change(function () {
+      var course_id = $('#course').val();
+      var year_id = $('#year').val();
+      var sem_id = $('#sem').val();
+      var sub_id = $('#subject').val();
+
+
+      console.log(course_id);
+      console.log(year_id);
+      // Update hidden inputs in the fetchForm
+      $('#course_id').val(course_id);
+      $('#year_id').val(year_id);
+      $('#sem_id').val(sem_id);
+      $('#sub_id').val(sub_id);
+  });
+
+});
+
+
+  /* $(document).ready(function(){
+      $('#enrollment_date').datepicker({
+          format: 'yyyy-mm-dd',
+          autoclose: true,
+          todayHighlight: true
+      });
+  
+    });
+ */
+  });
+</script>
+
+
+</body>
+
+</html>

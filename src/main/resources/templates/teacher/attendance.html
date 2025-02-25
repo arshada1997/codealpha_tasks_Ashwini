@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{/fragments/head::head}">
+        <title>Enrollment Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="sub_page">
+      
+    <div class="hero_area">
+       <div class="bg-box">
+        <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+      </div>
+      <header th:replace="~{/fragments/header::header}"></header>
+    </div>
+    <section class="book_section layout_padding">
+      <div class="container-fluid"> 
+            <div class="greetings" style="margin:10px ;">
+
+              <center><h1>Attendance Sheet!!!!</h1></center>
+            </div>  
+           
+      <form id="saveAttendance" th:action="@{/teacher/saveAttendance}" action="#"
+          method="post" th:object="${attendance}">
+          <div class="row">
+            <p th:text="${success}"></p>
+            <p th:text="${fail}"></p></div>
+         <br><br>
+         <div class="row" style="margin:50px 150px;">
+<!--             <center><h1 th:text="${email}"></h1></center>-->
+            <div class="container">
+            <div class="row" style="margin:10px 50px;">
+             <div class="col-md-4">
+      <!-- teacherSubjectDetails -->
+             <select id="course" class="form-control me-2" name="course"> 
+             <option value="">Select Course</option>
+             <option th:each="course : ${course}" th:value="${course.course_id}" th:text="${course.course_name}"  th:selected="${course.course_id == course_id}"></option>
+             </select>
+             </div>
+             <div class="col-md-4">
+             <select id="year" class="form-control me-2" name="year">
+             <option value="">Select Year</option>
+             <option th:each="year : ${year}" th:value="${year.year_id}" th:text="${year.year}"  th:selected="${year.year_id == year_id}"></option>
+
+             </select>
+             </div>
+             <div class="col-md-4">
+             <select id="sem" class="form-control me-2" name="sem">
+             <option value="">Select Semester</option>
+             <option th:each="sem : ${sem}" th:value="${sem.sem_id}" th:text="${sem.sem}"  th:selected="${sem.sem_id == sem_id}"></option>
+
+             </select>
+          </div>
+        </div>
+        <div class="row" style="margin:30px 50px;">
+         <div class="col-md-4">
+          <select id="subject" class="form-control me-2" name="subject">
+          <option value="">Select Subject</option>
+          <option th:each="subject : ${subject}" th:value="${subject.sub_id}" th:text="${subject.sub_name}"  th:selected="${subject.sub_id == sub_id}"></option>
+          </select>
+         </div>
+         <div class="col-md-4">
+           <input type="datetime-local" id="date" class="form-control me-2" name="DateTime" required>
+          
+         </div>
+         <div class="col-md-4">
+          <input type="text" name="student" id="student_id" class="form-control" placeholder="Enter Student ID">
+
+        </div>
+       </div>
+       <div class="row" style="margin:40px 50px;">
+        <div class="col-md-4">
+          <select name="status" id="status" class="form-control">
+            <option value="Select">Select Status</option>
+            <option value="PRESENT">PRESENT</option>
+            <option value="ABSENT">ABSENT</option>
+        </select>
+        </div>
+        <div class="col-md-4">
+         <div class="form_container" style="margin:-20px 40px;"> 
+          <div class="btn_box" >
+            <button type="submit"  class="save-btn" id="submitButton"> Save
+            </button>
+           </div>
+          </div>
+        </div>  
+          <!-- <br><br> <br><br> --> <!-- <div th:if="${message}" class="alert alert-success">
+                    <p th:text="${message}"></p>
+                </div> -->
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+
+             <!-- <div th:if="${successMessage}" class="alert alert-success">
+                <p th:text="${successMessage}"></p>
+            </div> -->
+<!--             <br><br> <br><br>
+ -->   <br><br><br>
+<input type="hidden" name="course_id" id="course_id">
+<input type="hidden" name="year_id" id="year_id">
+<input type="hidden" name="sem_id" id="sem_id">
+<input type="hidden" name="sub_id" id="sub_id">       
+  </div></div>
+        
+     </form>
+    </div>
+     
+ </div></section>
+ 
+</body>
+ </html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="~{/fragments/head::head}">
+         </head>
+      <body class="sub_page">
+      
+        <div class="hero_area">
+           <div class="bg-box">
+            <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+          </div>
+          <header th:replace="~{/fragments/header::header}"></header>
+        </div>
+      
+     <!-- Alt+Shift+A <div style="width:100%;height: 400px;">
+        <center style="margin:40px 30px;">
+            <h1>Attendance Management System</h1>
+        </center>   
+       </div>  
+       
+      --> 
+  <section class="book_section layout_padding">
+    <div class="container-fluid"> 
+        <div class="greetings" style="margin:10px ;">
+          <center><h1>Attendance Sheet!!!!</h1></center>
+        </div>  
+       <div class="container">
+        <div class="row" style="margin:10px 150px;">
+          <div class="col-md-4">
+
+           <form class="d-flex">
+              <form action="/course" method="post">
+
+               <select id="course" class="form-control me-2" name="course">
+                 <option value="course" disabled selected>Select Course</option>
+                  <!-- Loop through courses and create options -->
+                 <th:block th:each="course : ${course}">
+                  <option th:value="${course.course_name}" th:text="${course.course_name}"></option>
+                 </th:block>
+               </select>
+
+          </form>
+
+            </form>
+          </div>
+
+          <div class="col-md-4">
+            <form class="d-flex">
+              <form action="/yearSel">
+
+<!--               <input class="form-control me-2" type="text" placeholder="Select Course" aria-label="Search">
+ -->                <select id="year" class="form-control me-2" name="year">
+                 <option value="enrolldetailsyear" disabled selected>Select Year</option>
+            <!-- Loop through courses and create options -->
+            <th:block th:each="enrolldetailsyear : ${enrolldetailsyear}">
+                <option th:value="${enrolldetailsyear}" th:text="${enrolldetailsyear}"></option>
+            </th:block>
+            </select>
+             </form>
+          </form>
+          </div>
+          <div class="col-md-4">
+            <form class="d-flex">
+
+<!--               <input class="form-control me-2" type="text" placeholder="Select Course" aria-label="Search">
+ -->                <select id="subject" class="form-control me-2" name="subject">
+                 <option value="enrolldetails" disabled selected>Select Semester</option>
+            <!-- Loop through courses and create options -->
+            <th:block th:each="enrolldetails : ${enrolldetails}">
+                <option th:value="${enrolldetails.suject_id}" th:text="${enrolldetails.suject_id}"></option>
+            </th:block>
+            </select>
+
+          
+          </form>
+          </div>
+         </div>
+         <div class="row" style="margin:30px 150px;">
+ 
+          <div class="col-md-4">
+            <form class="d-flex">
+
+<!--               <input class="form-control me-2" type="text" placeholder="Select Course" aria-label="Search">
+ -->             <select id="year" class="form-control me-2" name="year">
+                 <option value="enrolldetails" disabled selected>Select Subject</option>
+            <!-- Loop through courses and create options -->
+            <th:block th:each="enrolldetails : ${enrolldetails}">
+                <option th:value="${enrolldetails.year}" th:text="${enrolldetails.year}"></option>
+            </th:block>
+            </select>
+            </form>
+           </div>
+          </div>
+          <div class="col-md-4" >
+  
+            <div class="form_container" style="margin:-20px 40px;">
+
+              <div class="btn_box" >
+               <button type="submit"> 
+                 Search
+               </button>
+              </div>
+            </div>
+          </div>
+        </form></div></div>
+          </div>
+        </div>
+         </div></div>
+          <div class="row" style="margin:40px 150px;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sr.No</th>
+                    <th scope="col">Enrollment ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td colspan="1">
+                      <select id="year" class="form-control" name="course">
+                        <option value="Select">Select</option>
+                        <option value="">Absent</option>
+                        <option value="" >Present</option>
+                   
+                        </select></td>
+                    
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td colspan="2">Larry the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                  </tbody>
+              </table></div>
+              <div class="row">    
+                <div class="form_container" style="margin:30px 650px;">
+
+                <div class="btn_box" >
+                 <button type="submit"> 
+                   Submit
+                 </button>
+                </div></div>
+            </div>
+        </div>
+      
+        </div></div>
+        </section>   
+           
+    <!--  <div style="margin: 130px 0px 10px;">
+      <footer th:replace="~{/fragments/footer::footer}">
+       </footer>
+      </div>
+    -->
+  </body>
+  </html>

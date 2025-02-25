@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{/fragments/head::head}">
+<!--     <script src="/js/courseHandler.js"></script>
+ -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+  </head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img th:src="@{/resources/static/images/hero1-bg.jpg}" alt="">
+    </div>
+    <header th:replace="~{/fragments/header::header}"></header>
+  </div>
+
+  <!-- about section -->
+   <center>
+  <section class="book_section layout_padding">
+   <div class="container">
+      <div class="heading_container">
+        <h4>
+          Student Enrollment 
+        </h4>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <p th:text="${StudentMSG}"></p>
+            <p th:text="${Savesuccess}"></p>
+            <p th:text="${error}" th:if="${error ne null}"  class="alert alert-danger" ></p>
+
+            <form action="#" id="addEnrollmentForm"
+             th:action="@{/admin/saveEnrollment}" th:object="${enrollment}" method="post">
+             <!--  th:object="${account}"
+             method="post">
+              --> 
+                <select id="student" class="form-control me-2" name="student"> 
+                <option value="">Select Student</option>
+                <option th:each="student : ${students}" th:value="${student.student_id}" th:text="${student.full_name}"  th:selected="${student.student_id == student_id}"></option>
+               </select>
+              <div id="EnrollDate">
+                <input type="LocalDate" id="enrollment_date" name="enrollment_date"   class="form-control" placeholder="Enter Enrollment_Date" />
+              </div>
+             
+    
+        <select id="course" class="form-control me-2" name="course"> 
+        <option value="">Select Course</option>
+        <option th:each="course : ${courses}" th:value="${course.course_id}" th:text="${course.course_name}"  th:selected="${course.course_id == course_id}"></option>
+       </select>
+        <select id="year" class="form-control me-2" name="year" >
+            <option value="">Select Year</option>
+            <option th:each="year : ${years}" th:value="${year.year_id}" th:text="${year.year}"  th:selected="${year.year_id == year_id}"></option>
+
+        </select>
+        
+            <select id="semester"  onchange="fetchSubjects()" class="form-control me-2" name="semester">
+                <option value="">Select Semester</option>
+                 <option th:each="semester : ${semesters}" th:value="${semester.sem_id}" th:text="${semester.sem}"  th:selected="${semester.sem_id == sem_id}"></option>
+          
+            </select>
+<!--             <input type="subject" name="subject" id="subject" class="form-control me-2">
+ -->               <select id="subject" class="form-control me-2" name="subject" multiple style="width: 550px;height:60px ;padding: 5px; font-size: 16px;">
+  <option value="">Select Subject</option>
+   <option th:each="subject : ${subject}" th:value="${subject.sub_id}" th:text="${subject.sub_name}"  th:selected="${subject.sub_id == sub_id}"></option>
+ </select>
+            
+              <div class="btn_box" style="margin: 20px 170px;">
+                <button type="submit" class="btn  btn-secondary btn-lg btn-danger"> 
+                  Save
+                </button>
+              </div>
+               
+              </form>
+              
+              <div class="row"  style="margin:-15px">
+                <div class="col-md-4">
+                  <div class="btn_box" style="margin: -90px 200px;height: 10px;">
+                    <form th:action="@{/admin/viewEnrollment}"><div class="btn_box" style="margin: 20px 170px;">
+                      <button type="submit" class="btn  btn-secondary btn-lg btn-danger"> 
+                        Enrollments 
+                      </button>
+                    </form>
+                  </div>
+                </div></div>
+        </div></div>
+    </div></div></div>
+  </section></center>
+  <script>
+  // Function to fetch subjects based on selected course, year, and semester
+  function fetchSubjects() {
+    let course_id = document.getElementById('course').value;
+    let year_id = document.getElementById('year').value;
+    let sem_id = document.getElementById('semester').value;
+
+    // Check if all required values are selected
+    if (!course_id || !year_id || !sem_id) {
+        return;  // Do nothing if any of the values are not selected
+    }
+
+    console.log('Fetching subjects for courseId:', course_id, 'yearId:', year_id, 'semesterId:', sem_id);
+
+    // Send AJAX request to fetch subjects
+    fetch(`/admin/getSubjects?course_id=${course_id}&year_id=${year_id}&sem_id=${sem_id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Received subjects:', data);  // Log the response data
+
+        let subjectDropdown = document.getElementById('subject');
+        subjectDropdown.innerHTML = '';  // Clear previous options
+        
+        // Add a default "Select" option
+        let defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.text = 'Select Subject';
+        subjectDropdown.appendChild(defaultOption);
+
+        // Populate the dropdown with new subject options
+        data.forEach(subject => {
+          let option = document.createElement('option');
+          option.value = subject.sub_id;  // Assuming 'id' is the subject identifier
+          option.text = subject.sub_name;  // Assuming 'name' is the subject name
+          subjectDropdown.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching subjects:', error);
+      });
+  }
+  
+  document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("subject").addEventListener("change", fetchSubjects);
+    });
+  
+  </script>
+
+
+</body>
+
+</html>

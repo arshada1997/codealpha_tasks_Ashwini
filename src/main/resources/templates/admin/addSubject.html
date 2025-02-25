@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{/fragments/head::head}">
+<!--     <script src="/js/courseHandler.js"></script>
+ -->
+    <script>
+        function toggleFields() {
+          let role = document.getElementById("role").value;
+        }
+          </script>
+  </head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img th:src="@{/resources/static/images/hero1-bg.jpg}" alt="">
+    </div>
+    <header th:replace="~{/fragments/header::header}"></header>
+  </div>
+
+  <!-- about section -->
+   <center>
+  <section class="book_section layout_padding">
+   <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+
+            <form action="#"
+             th:action="@{/admin/saveTeacherSubject}" th:object="${teacherSubject}" method="post">
+             <select id="teacher" class="form-control me-2" name="teacher"> 
+                <option value="">Select Teacher</option>
+                <option th:each="teacher : ${teachers}" th:value="${teacher.id}" th:text="${teacher.full_name}"  th:selected="${teacher.id == id}"></option>
+               </select>
+            
+             <select id="course" class="form-control me-2" name="course"> 
+                <option value="">Select Course</option>
+                <option th:each="course : ${courses}" th:value="${course.course_id}" th:text="${course.course_name}"  th:selected="${course.course_id == course_id}"></option>
+               </select>
+               <select id="year" class="form-control me-2" name="year">
+                <option value="">Select Year</option>
+                <option th:each="year : ${years}" th:value="${year.year_id}" th:text="${year.year}"  th:selected="${year.year_id == year_id}"></option>
+        
+            </select>
+            
+                <select id="semester" class="form-control me-2" name="semester">
+                    <option value="">Select Semester</option>
+                     <option th:each="semester : ${semesters}" th:value="${semester.sem_id}" th:text="${semester.sem}"  th:selected="${semester.sem_id == sem_id}"></option>
+              
+                </select>
+                      <select id="subject" class="form-control me-2" name="subject"><!--  multiple style="width: 550px;height:60px ;padding: 5px; font-size: 16px;"> -->
+        <option value="">Select Subject</option>
+        <option th:each="subject : ${subject}" th:value="${subject.sub_id}" th:text="${subject.sub_name}"  th:selected="${subject.sub_id == sub_id}"></option>
+        </select>
+                
+                     <div class="btn_box">
+                        <button type="submit" class="btn  btn-secondary btn-lg btn-danger"> 
+                          Save
+                        </button>
+                    
+                      </form>
+                     
+                </div>
+            </div></div></div>
+          </section></center>
+          
+</body>
+</html>          

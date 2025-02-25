@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <html xmlns:th="http://www.thymeleaf.org">
+        <head th:replace="~{/fragments/head::head}">
+                  </head>
+      <body class="sub_page">
+      
+        <div class="hero_area">
+           <div class="bg-box">
+            <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+          </div>
+          <header th:replace="~{/fragments/header::header}"></header>
+        </div>
+      
+     <!-- Alt+Shift+A <div style="width:100%;height: 400px;">
+        <center style="margin:40px 30px;">
+            <h1>Attendance Management System</h1>
+        </center>   
+       </div>  
+       
+      --> 
+    <section class="book_section layout_padding">
+      <div class="container-fluid"> 
+          <div class="greetings" style="margin:20px ;">
+          <center><h1>Student Details</h1></center>
+          </div>  
+        <div class="container">
+          <div class="row" >
+            <form th:action="@{/admin/viewEnrollment}">
+
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">EnrollID</th>
+                    <th scope="col">EnrollDate</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Sem</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Operations</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="enrollment :${enrollments}">
+                    <td th:text="${enrollment.id}"   name="id" id="id" >
+                   </td>
+                  <td th:text="${enrollment.enrollment_date}"  name="enrollment_date" id="enrollment_date"></td>
+                  <td th:text="${enrollment.student.full_name}"  name="full_name" id="full_name"></td>
+                  <td th:text="${enrollment.course.course_name}"  name="course_name" id="course_name"></td>
+                  <td th:text="${enrollment.year.year}"  name="year" id="year"></td>
+                  <td th:text="${enrollment.semester.sem}"  name="sem" id="sem"></td>
+                  <td  th:each="subject : ${enrollment.subjects}" th:text="${subject.sub_name}"></td>
+                  <td>
+                    <div class="btn-box">
+                    <a th:href="@{/admin/updateEnrollment/{id}(id=${enrollment.id})}"> 
+                        <button type="submit" class="btn btn-primary btn-lg btn-danger">Update</a></div>
+                   </td>    
+                 <!--  <td><a th:href="@{/admin/{id}+'/deleteEnrollment'}" class="btn btn-primary btn-lg btn-primary" role="button" aria-pressed="true">Delete</a>
+                   </td>    
+                  --> </td>
+
+
+
+                 </tr></tbody>
+              </table></div>
+        </div>
+      </div>  </form>
+     </section>
+    <!--  <div style="margin: 130px 0px 10px;">
+      <footer th:replace="~{/fragments/footer::footer}">
+       </footer>
+      </div>
+    -->
+  </body>
+  </html>

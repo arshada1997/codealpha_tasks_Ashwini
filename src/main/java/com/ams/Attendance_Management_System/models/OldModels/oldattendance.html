@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{/fragments/head::head}">
+        <title>Enrollment Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="sub_page">
+      
+    <div class="hero_area">
+       <div class="bg-box">
+        <img th:src="@{/resources/static/images/hero-bg.png}" alt="">
+      </div>
+      <header th:replace="~{/fragments/header::header}"></header>
+    </div>
+    <section class="book_section layout_padding">
+        <div class="container-fluid"> 
+            <div class="greetings" style="margin:10px ;">
+              <center><h1>Attendance Sheet!!!!</h1></center>
+            </div>  
+<!--             <form th:action="@{/teacher/attendance}">
+ -->
+           <div class="container">
+            <div class="row" style="margin:10px 50px;">
+              <div class="col-md-4">
+    
+               <form class="d-flex">
+    <select id="course" class="form-control me-2" name="course"> 
+        <option value="">Select Course</option>
+        <option th:each="course : ${courses}" th:value="${course.course_id}" th:text="${course.course_name}" th:selected="${course.course_id == course_id}"></option>
+    </select>
+     </form></div>
+     <div class="col-md-4">
+        <form class="d-flex">
+    <select id="year" class="form-control me-2" name="year">
+        <option value="">Select Year</option>
+    </select>
+    </form></div>
+    <div class="col-md-4">
+        <form class="d-flex">
+    <select id="sem" class="form-control me-2" name="sem">
+        <option value="">Select Semester</option>
+    </select>
+</form></div></div>
+<div class="row" style="margin:30px 50px;">
+
+<div class="col-md-4">
+    <form class="d-flex">
+    <select id="subject" class="form-control me-2" name="subject">
+        <option value="">Select Subject</option>
+    </select>
+    </div></form>
+</div>    
+<!-- Second Form for Fetch Students Button -->
+<form id="fetchStudents" th:action="@{/teacher/students}">
+ <div class="col-md-4">
+    <form class="d-flex">
+    <!-- Hidden fields to store selected values -->
+    <input type="hidden" name="course_id" id="course_id">
+    <input type="hidden" name="year_id" id="year_id">
+    <input type="hidden" name="sem_id" id="sem_id">
+    <input type="hidden" name="sub_id" id="sub_id">
+    <div class="btn_box" >
+
+    <button type="submit">Search</button></div>
+</form></div>
+  
+  </form>
+    <div id="studentTable" >    
+
+  <!-- 
+     <div class="row" style="margin:40px 150px;">
+        <form id="saveAttendance" th:action="@{/teacher/saveAttendance}" 
+        th:object="${attendance}"
+        method="post">
+   -->
+            
+              </div>
+   </div>
+    </div></div>
+        </section>   
+
+    <script>
+        $(document).ready(function () {
+            $('#course').change(function () {
+                var course_id = $(this).val();
+                if (course_id) {
+                    console.log(course_id); // Check if this is being set properly
+
+                    $.get('/teacher/course/' + course_id + '/details', function (data) {
+                        $('#year').html('<option value="">--Select--</option>');
+                        $('#sem').html('<option value="">--Select--</option>');
+                        $('#subject').html('<option value="">--Select--</option>');
+
+                        $.each(data.years, function (index, year) {
+                            var selected = (year.year_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                            $('#year').append('<option value="' + year.year_id + '">' + year.year + '</option>');
+                        });
+
+                        $.each(data.semesters, function (index, sem) {
+                            var selected = (sem.sem_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                            $('#sem').append('<option value="' + sem.sem_id + '">' + sem.sem+ '</option>');
+                        });
+
+                        $.each(data.subjects, function (index, subject) {
+                            var selected = (subject.sub_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                            $('#subject').append('<option value="' + subject.sub_id + '">' + subject.sub_name + '</option>');
+                        });
+
+                        $('#year, #sem, #subject').prop('disabled', false);
+                    });
+                }
+            });
+
+              // When a dropdown value changes, update the hidden fields
+        $('#course, #year, #sem, #subject').change(function () {
+            var course_id = $('#course').val();
+            var year_id = $('#year').val();
+            var sem_id = $('#sem').val();
+            var sub_id = $('#subject').val();
+
+
+            console.log(course_id);
+            console.log(year_id);
+            // Update hidden inputs in the fetchForm
+            $('#course_id').val(course_id);
+            $('#year_id').val(year_id);
+            $('#sem_id').val(sem_id);
+            $('#sub_id').val(sub_id);
+        });
+
+            $('#fetchStudents').submit(function (event) {
+            event.preventDefault(); // Prevent the form from directly submitting
+             {
+                var course_id = $('#course').val();
+                var year_id = $('#year').val();
+                var sem_id = $('#sem').val();
+                var sub_id = $('#subject').val();
+ // Update hidden inputs in the fetchForm
+ $('#course_id').val(course_id);
+            $('#year_id').val(year_id);
+            $('#sem_id').val(sem_id);
+            $('#sub_id').val(sub_id);
+
+                if (course_id && year_id && sem_id && sub_id) {
+                    $.get('/teacher/students', {
+                        course_id: course_id,
+                        year_id: year_id,
+                        sem_id: sem_id,
+                        sub_id: sub_id
+                    }, function (data) {
+                    $('#studentTable').html(data); // Display the students table
+                });
+
+                } else {
+                alert('Please select all the required fields!');
+                }
+                
+             }
+              // Reset form on button click
+  /*  $('#resetFormButton').click(function () {
+        $('#myForm')[0].reset();  // Reset the form fields
+       // $('#course').html('<option value="">--Select--</option>');  // Reset the dynamic dropdown
+
+        $('#year').html('<option value="">--Select--</option>');  // Reset the dynamic dropdown
+        $('#course').html('<option value="">--Select--</option>');  // Reset the dynamic dropdown
+        $('#subject').html('<option value="">--Select--</option>');  // Reset the dynamic dropdown
+    });*/
+            });
+        });   
+        // Show the student records section
+        $('#studentTable').show(); 
+        document.addEventListener("DOMContentLoaded", function () {
+        let dateInputs = document.querySelectorAll(".datepicker");
+        dateInputs.forEach(input => {
+            input.type = "date";
+            flatpickr(input, {
+                enableTime: true,
+                dateFormat: "Y-m-d"
+            });
+        });
+        });
+      
+    </script>
+</th:action>
+</body>
+</html>

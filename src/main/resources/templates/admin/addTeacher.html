@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{/fragments/head::head}">
+<!--     <script src="/js/courseHandler.js"></script>
+ -->
+    <script>
+        function toggleFields() {
+          let role = document.getElementById("role").value;
+        }
+          </script>
+  </head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+    <div class="bg-box">
+      <img th:src="@{/resources/static/images/hero1-bg.jpg}" alt="">
+    </div>
+    <header th:replace="~{/fragments/header::header}"></header>
+  </div>
+
+  <!-- about section -->
+   <center>
+  <section class="book_section layout_padding">
+   <div class="container">
+      <div class="heading_container">
+        <div class="row"  style="margin:-15px">
+         <div class="col-md-4">
+
+            <div class="btn_box" >
+              <form th:action="@{/admin/addSubject}">
+             <button type="submit" class="btn  btn-secondary btn-lg btn-primary"> 
+              Add Subject
+            </button></form>
+          </div>
+         </div>  
+          <div class="col-md-4"> 
+
+              <div class="btn_box" >
+                <form th:action="@{/admin/viewTeacher}">
+              <button type="submit" class="btn  btn-secondary btn-lg btn-primary"> 
+             View Teacher
+            </button></form>
+           </div>
+          </div>
+        </div>
+      </div>     
+        <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <p th:text="${error}" th:if="${error ne null}"  class="alert alert-danger" ></p>
+
+            <form action="#"
+             th:action="@{/admin/saveteacher}" th:object="${teacher}" method="post">
+              <div>
+                <input type="text" id="full_name" name="full_name"   class="form-control" placeholder="Enter Full Name" />
+              </div>
+              <div>
+                <input id="email" name="email" type="email" class="form-control" placeholder="Enter Email" />
+<!--                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="error"  class="alert alert-danger" role="alert">Email Error</p>
+ -->              </div>
+              <div>
+                <input type="password" id="password" name="password"  class="form-control" placeholder="Enter Password" />
+<!--                 <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="error"  class="alert alert-danger" role="alert">Password Error</p>
+ -->
+              </div>
+              <div>
+                <input type="text" id="mobile_no" name="mobile_no"   class="form-control" placeholder="Enter MobileNo" />
+              </div>
+              <div>
+                <input type="text" id="address" name="address"   class="form-control" placeholder="Enter Address" />
+              </div>
+<!--               th:field="*{middlename}"
+ -->           
+             
+              <div>
+                <input type="LocalDate" id="date_of_birth" name="date_of_birth"  class="form-control" placeholder="Enter date_of_birth" />
+<!--                 <p th:if="${#fields.hasErrors('birthofDate')}" th:errors="*{birthofDate}" th:errorclass="error"  class="alert alert-danger" role="alert">birthofDate Error</p>
+ -->
+              </div>
+           
+              <div>
+                <select name="text" id="gender"  class="form-control me-2" placeholder="Select gender" >
+                  <option value=" ">SELECT</option>
+                  <option value="MALE">MALE</option>
+                  <option value="FEMALE">FEMALE</option>
+                  <option value="OTHERS">OTHERS</option>
+
+                </select>
+<!--                 <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" th:errorclass="error"  class="alert alert-danger" role="alert">Gender Error</p>
+ -->
+<!--               </div>
+ -->               <div>
+                  <select id="subject" class="form-control me-2" name="subject" multiple style="width: 550px;height:60px ;padding: 5px; font-size: 16px;">
+                   <option value="">Select Subject</option>
+                   <option th:each="subject : ${subject}" th:value="${subject.sub_id}" th:text="${subject.sub_name}"  th:selected="${subject.sub_id == sub_id}"></option>
+                  </select>
+        
+             <div class="btn_box">
+                <button type="submit" class="btn  btn-secondary btn-lg btn-danger"> 
+                  Register
+                </button>
+            </div>
+              </form>
+             
+        </div>
+    </div></div></div>
+  </section>
+</center>
+  <script>
+      function fetchSubjects() {
+    const course_id = document.getElementById('course').value;
+    const year_id = document.getElementById('year').value;
+    const sem_id = document.getElementById('semester').value;
+
+    // Check if all required values are selected
+    if (!course_id || !year_id || !sem_id) {
+        return;  // Do nothing if any of the values are not selected
+    }
+
+    console.log('Fetching subjects for courseId:', course_id, 'yearId:', year_id, 'semesterId:', sem_id);
+
+    // Send AJAX request to fetch subjects
+    fetch(`/admin/getSubjects?course_id=${course_id}&year_id=${year_id}&sem_id=${sem_id}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log('Received subjects:', data);  // Log the response data
+
+        let subjectDropdown = document.getElementById('subject');
+        subjectDropdown.innerHTML = '';  // Clear previous options
+        
+        // Add a default "Select" option
+        let defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.text = 'Select Subject';
+        subjectDropdown.appendChild(defaultOption);
+
+        // Populate the dropdown with new subject options
+        data.forEach(subject => {
+          let option = document.createElement('option');
+          option.value = subject.sub_id;  // Assuming 'id' is the subject identifier
+          option.text = subject.sub_name;  // Assuming 'name' is the subject name
+          subjectDropdown.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching subjects:', error);
+      });
+  }
+
+  /* $(document).ready(function () {
+  
+    $(document).ready(function () {
+      $('#course').change(function () {
+          var course_id = $(this).val();
+          if (course_id) {
+              console.log(course_id); // Check if this is being set properly
+
+              $.get('/admin/course/' + course_id + '/details', function (data) {
+                  $('#year').html('<option value="">--Select--</option>');
+                  $('#sem').html('<option value="">--Select--</option>');
+                  $('#subject').html('<option value="">--Select--</option>');
+
+                  $.each(data.years, function (index, year) {
+                      var selected = (year.year_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#year').append('<option value="' + year.year_id + '">' + year.year + '</option>');
+                  });
+
+                  $.each(data.semesters, function (index, sem) {
+                      var selected = (sem.sem_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#sem').append('<option value="' + sem.sem_id + '">' + sem.sem+ '</option>');
+                  });
+
+                  $.each(data.subjects, function (index, subject) {
+                      var selected = (subject.sub_id === data.selectedSubjectId) ? 'selected' : ''; // Assuming 'selectedSubjectId' is passed in data
+
+                      $('#subject').append('<option value="' + subject.sub_id + '">' + subject.sub_name + '</option>');
+                  });
+
+                  $('#year, #sem, #subject').prop('disabled', false);
+              });
+          }
+      });
+
+        // When a dropdown value changes, update the hidden fields
+  $('#course, #year, #sem, #subject').change(function () {
+      var course_id = $('#course').val();
+      var year_id = $('#year').val();
+      var sem_id = $('#sem').val();
+      var sub_id = $('#subject').val();
+
+
+      console.log(course_id);
+      console.log(year_id);
+      // Update hidden inputs in the fetchForm
+      $('#course_id').val(course_id);
+      $('#year_id').val(year_id);
+      $('#sem_id').val(sem_id);
+      $('#sub_id').val(sub_id);
+  });
+
+});
+  }); */
+</script>
+
+
+</body>
+
+</html>
