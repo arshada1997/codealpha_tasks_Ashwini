@@ -61,7 +61,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
       Admin admin = new Admin();
       admin.setFull_name("ABC");
-      admin.setEmail("ashwini.gaikwad@viit.ac.in");
+      admin.setEmail("davidJones@iit.ac.in");
       admin.setPassword(passwordEncoder.encode("123"));
       admin.setRole(Roles.ADMIN);
       adminRepository.save(admin);
